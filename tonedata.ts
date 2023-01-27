@@ -1,3 +1,5 @@
+import * as tone from 'tone';
+
 export class Chord {
     notes: number[];
 
@@ -37,6 +39,21 @@ export function parseChord(chord: Chord, addSlash: boolean) {
         const chordName = addSlash? `${name}/${octave}` : `${name}${octave}`;
         return chordName;
     });
-    console.log(resChord);
     return resChord;
+}
+
+export function playNotes(bpm: number, measures: Chord[][]) {
+    const beatLength = 1 / (bpm / 60);
+    const synth = new tone.PolySynth(tone.Synth).toDestination();
+    const now = tone.now();
+    const noteLength = 4 / measures[0].length;
+
+    measures.map((measure, i) => {
+        measure.map((chord, j) => {
+            const notes = parseChord(chord, false);
+            const duration = noteLength*beatLength;
+            const startTime = now + i*duration + j*beatLength;
+            synth.triggerAttackRelease(notes, duration - 0.5, startTime);
+        });
+    });
 }

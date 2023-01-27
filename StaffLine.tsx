@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Vex from "vexflow";
 import { parseChord } from "./tonedata";
 import { ToneData } from "./tonedata";
@@ -17,7 +17,7 @@ export default function StaffLine(props: StaffLineProps) {
     const VF = Vex.Flow;
     const rootRef = useRef<HTMLDivElement>(null);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const root = rootRef.current;
         if (root) {
             root.innerHTML = '';
